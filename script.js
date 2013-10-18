@@ -44,6 +44,16 @@ function performSearch (searchTerm) {
 
       } else {
         drawChart($('#summary')[0], resp.summary);
+
+        var template = _.template($( "script.template" ).html());
+        var eltTweets = $('#tweets');
+        eltTweets.html('');
+
+        console.log(resp.tweets);
+        for (var t in resp.tweets) {
+          var tplData = resp.tweets[t];
+          eltTweets.append(template(tplData));
+        }
       }
     });
   }
@@ -61,14 +71,15 @@ function drawChart (element, chartData) {
   data.addColumn('number', 'Amount');
   data.addRows([
     ['Positive', chartData.positive],
-    ['Negative', chartData.negative],
+    ['Neutral', chartData.neutral],
+    ['Negative', chartData.negative]
   ]);
 
   // Set chart options
   var options = {
     'title':  'Results Summary',
     'width':  240, 'height': 160,
-    'colors': ['#0A0', '#D00']
+    'colors': ['#0A0', '#CCC', '#D00']
   };
 
   // Instantiate and draw our chart, passing in some options.
@@ -89,6 +100,7 @@ function onSearchSubmit () {
 
 /* Main Script */
 $(function(){
+  _.templateSettings.variable = "tpl";
   $('#form-search').on('submit', onSearchSubmit);
 });
 

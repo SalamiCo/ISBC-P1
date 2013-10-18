@@ -8,7 +8,16 @@
 
     <script type="text/javascript" src="//www.google.com/jsapi"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
     <script type="text/javascript" src="script.js"></script>
+
+    <script type="text/template" class="template">
+      <article class="tweet <%- tpl.class %>">
+        <div class="text"><%- tpl.tweet.text %></div>
+        <aside class="positive">+<%- tpl.tweet.positive %></aside>
+        <aside class="negative">-<%- tpl.tweet.negative %></aside>
+      </article>
+    </script>
   </head>
 
   <body>
@@ -27,10 +36,15 @@
           <input id="form-search-send" type="submit" value="Search" />
         </form>
 
-      <!-- Results summary -->
-      <div id="summary" class="summary"></div>
+        <!-- Results summary -->
+        <div id="summary" class="summary"></div>
+      </header>
 
-      <div style="clear:both" />
+      <!-- Clear -->
+      <div style="clear:both"></div>
+
+      <!-- Tweets -->
+      <div id="tweets"></div>
     </div>
   </body>
 </html>

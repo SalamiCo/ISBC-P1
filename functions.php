@@ -2,20 +2,13 @@
 
 require_once('TwitterQuery.php');
 
-function sendQuery($q){
-
+function twitter_query ($term) {
 	$query = array( // query parameters
-	    'q'     => $q,
+	    'q'     => $term,
 	    'count' => '200',
 	    'result_type' => 'mixed',
 	    'lang' => 'es'
 	);
-
-	//TODO Encode strings UTF-8
-	// echo "<pre>";
-	// print_r( queryTwitterAPI($query) );
-	// echo "</pre>";
-
 
 	return queryTwitterAPI($query);
 	// foreach($results['statuses'] as $tweet){
@@ -27,5 +20,18 @@ function sendQuery($q){
 	// 	echo "Coord0: ".   	 $tweet['geo']['coordinates'][0]."<br>";				//coordinates
 	// 	echo "Coord1: ".   	 $tweet['geo']['coordinates'][1]."<br>";				//coordinates
 	// }
-	
+}
+
+function process_tweets ($tweets) {
+	$processed = array();
+
+	foreach ($tweets as $tweet) {
+		$processed[] = array(
+			'text' => $tweet['text'],
+			'positive' => mt_rand(0, 8),
+			'negative' => mt_rand(0, 8),
+		);
+	}
+
+	return $processed;
 }

@@ -1,6 +1,6 @@
 <?php
   
-  require_once('TwitterQueryExample.php');
+  require_once('functions.php');
 
   $result = array('status' => 'error_unknown');
 
@@ -9,15 +9,28 @@
     $result['error'] = 'No search term was specified';
 
   } else {
-    $queryResult = sendQuery($_GET['term']);
+    $queryResult = twitter_query($_GET['term']);
 
     $result['status'] = 'ok';
     $result['summary'] = array(
-      'positive' => mt_rand(0, 128),
-      'negative' => mt_rand(0, 128)
+      'positive' => 0,
+      'neutral'  => 0,
+      'negative' => 0
     );
-    $result['tweets'] = $queryResult['statuses'];
+    $result['tweets'] = process_tweets($queryResult['statuses']);
 
+    foreach ($result['tweets'] as $tweet) {
+    	$pos = $tweet['positive'];
+    	$neg = $tweet['negative'];
+
+    	if ($pos > $neg) {
+    		$result['summary']['positive']++;
+    	} else if ($neg > $pos) {
+    		$result['summary']['negative']++;
+    	} else {
+    		$result['summary']['neutral']++;
+    	}
+    }
   }
 
   /* Return the result array as JSON */
