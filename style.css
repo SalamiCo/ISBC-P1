@@ -1,0 +1,41 @@
+/* The solution to the universe's problems */
+* { box-sizing: border-box; }
+body { padding: 0; margin: 0; font-size: 16px;}
+
+.full-wrap {
+  position: relative;
+
+  width: 100%;
+  max-width: 1024px;
+
+  min-height: 100%;
+
+  margin: 0 auto;
+  background: red;
+}
+
+header {
+  position: relative;
+  width: 100%;
+
+  padding-right: 276px;
+}
+
+h1 {
+  width: 100%;
+
+  margin: 0;
+  padding: 0;
+
+  text-align: center;
+  font-family: Bevan;
+  font-weight: 400;
+  font-size: 2em;
+}
+
+.summary {
+  float: right;
+
+  width: 260px;
+  padding-right: 0.5em;
+}

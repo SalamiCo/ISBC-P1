@@ -42,7 +42,7 @@ function performSearch (searchTerm) {
         showMessage('error', 'Error in request: [' + resp.status + '] ' + resp.error);
 
       } else {
-        drawChart($('#results-chart')[0], resp.summary);
+        drawChart($('#summary')[0], resp.summary);
       }
     });
   }
@@ -66,7 +66,7 @@ function drawChart (element, chartData) {
   // Set chart options
   var options = {
     'title':  'Results Summary',
-    'width':  400, 'height': 300,
+    'width':  240, 'height': 160,
     'colors': ['#0A0', '#D00']
   };
 

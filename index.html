@@ -3,6 +3,7 @@
   <head>
     <title>Twitter Sentiment Analysis</title>
 
+    <link href='//fonts.googleapis.com/css?family=Bevan' rel='stylesheet' type='text/css'>
     <link type="text/css" rel="stylesheet" href="style.css" />
 
     <script type="text/javascript" src="//www.google.com/jsapi"></script>
@@ -11,26 +12,25 @@
   </head>
 
   <body>
-    <!-- Messages -->
-    <div id="messages"></div>
+    <div class="full-wrap">
+      <!-- Messages -->
+      <div id="messages"></div>
 
-    <!-- Page Header -->
-    <header>
-      <!-- Main Title -->
-      <h1>Twitter Sentiment Analysis</h1>
+      <!-- Page Header -->
+      <header>
+        <!-- Main Title -->
+        <h1>Twitter Sentiment Analysis</h1>
 
-      <!-- Search Form -->
-      <form id="form-search" name="search" action="#">
-        <input id="form-search-term" type="search" name="term" placeholder="Enter a Twitter search term"/>
-        <input id="form-search-send" type="submit" value="Search" />
-      </form>
-    </header>
+        <!-- Search Form -->
+        <form id="form-search" name="search" action="#">
+          <input id="form-search-term" type="search" name="term" placeholder="Enter a Twitter search term"/>
+          <input id="form-search-send" type="submit" value="Search" />
+        </form>
 
-    <!-- Results summary -->
-    <div class="summary">
-      <div id="results-chart"></div>
-      <p class="num-positive"></p>
-      <p class="num-negative"></p>
+      <!-- Results summary -->
+      <div id="summary" class="summary"></div>
+
+      <div style="clear:both" />
     </div>
   </body>
 </html>
