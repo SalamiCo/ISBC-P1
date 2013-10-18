@@ -49,9 +49,9 @@ function performSearch (searchTerm) {
         var eltTweets = $('#tweets');
         eltTweets.html('');
 
-        console.log(resp.tweets);
         for (var t in resp.tweets) {
-          var tplData = resp.tweets[t];
+          var tplData = {'tweet': resp.tweets[t]};
+          console.log(tplData);
           eltTweets.append(template(tplData));
         }
       }

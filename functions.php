@@ -25,13 +25,14 @@ function twitter_query ($term) {
 function process_tweets ($tweets) {
 	$processed = array();
 
-	foreach ($tweets as $tweet) {
-		$processed[] = array(
-			'text' => $tweet['text'],
-			'positive' => mt_rand(0, 8),
-			'negative' => mt_rand(0, 8),
-		);
+	if (is_array($tweets)) {
+		foreach ($tweets as $tweet) {
+			$processed[] = array(
+				'text' => $tweet['text'],
+				'positive' => mt_rand(0, 8),
+				'negative' => mt_rand(0, 8),
+			);
+		}
 	}
-
 	return $processed;
 }

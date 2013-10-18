@@ -33,7 +33,6 @@ function queryTwitterAPI($query)
     // are already encoded, and must be by this point, so we undo
     // the encoding step
     $querystring = urldecode(http_build_query($arr, '', '&'));
-
     $url = "https://$host$path";
 
     // mash everything together for the text to hash
