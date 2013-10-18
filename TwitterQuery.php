@@ -1,4 +1,3 @@
-
 <?php
 
 function queryTwitterAPI($query)
@@ -50,7 +49,6 @@ function queryTwitterAPI($query)
     // (without the oauth params)
      $url .= "?".http_build_query($query);
     //$url.=$getfield;
-    echo "[DEBUG]" . $url . "<br>";
     $url=str_replace("&amp;","&",$url); //Patch by @Frewuill
 
     $oauth['oauth_signature'] = $signature; // don't want to abandon all that work!
@@ -82,5 +80,4 @@ function queryTwitterAPI($query)
     return $twitter_data;
 }
 
-?>
 
