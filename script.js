@@ -38,6 +38,7 @@ function performSearch (searchTerm) {
       data: {'term': searchTerm}
     });
     ajax.done(function(resp){
+      console.log(resp);
       if (resp.status != 'ok') {
         showMessage('error', 'Error in request: [' + resp.status + '] ' + resp.error);
 
