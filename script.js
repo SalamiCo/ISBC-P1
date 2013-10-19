@@ -1,3 +1,5 @@
+var msnry;
+
 /**
  * Shows a essage indicating an error or other condition.
  *
@@ -32,11 +34,20 @@ function performSearch (searchTerm) {
   if (!searchTerm.match(/\S/)) {
     showMessage('error', 'Enter a search term!');
   } else {
+    $('#form-search-send').attr('disabled','disabled');
+    $('#loading').show();
+
     var ajax = $.ajax({
       url: 'core.php',
       type: 'GET',
       data: {'term': searchTerm}
     });
+
+    ajax.always(function(){
+      $('#form-search-send').removeAttr('disabled');
+      $('#loading').hide();
+    });
+
     ajax.done(function(resp){
       console.log(resp);
       if (resp.status != 'ok') {
@@ -47,14 +58,24 @@ function performSearch (searchTerm) {
 
         var template = _.template($( "script.template" ).html());
         var eltTweets = $('#tweets');
-        eltTweets.html('');
+        $('#tweets .tweet').remove();
 
         for (var t in resp.tweets) {
-          var tplData = {'tweet': resp.tweets[t]};
+          var tws = resp.tweets[t]
+          var tplData = {
+            'tweet': tws,
+            'class':
+                tws.positive>tws.negative?'tweet-positive'
+              : tws.positive<tws.negative?'tweet-negative'
+              : 'tweet-neutral'
+          };
           console.log(tplData);
           eltTweets.append(template(tplData));
         }
       }
+
+      msnry.reloadItems();
+      msnry.layout();
     });
   }
 }
@@ -78,8 +99,16 @@ function drawChart (element, chartData) {
   // Set chart options
   var options = {
     'title':  'Results Summary',
-    'width':  240, 'height': 160,
-    'colors': ['#0A0', '#CCC', '#D00']
+    'width':  $(element).width(), 'height': $(element).height(),
+    'colors': ['#0A0', '#CCC', '#D00'],
+    'backgroundColor': {
+        'opacity': 0
+     },
+     'legend': {'position': 'none'},
+     'title': {'position': 'none'},
+     'chartArea': {
+        'width': '90%', 'height': '90%'
+      }
   };
 
   // Instantiate and draw our chart, passing in some options.
@@ -102,6 +131,13 @@ function onSearchSubmit () {
 $(function(){
   _.templateSettings.variable = "tpl";
   $('#form-search').on('submit', onSearchSubmit);
+  drawChart($('#summary')[0], {positive: 0, negative: 0, neutral: 1});
+  
+  msnry = new Masonry($('#tweets')[0], {
+    'columnWidth': $('.tweet-sizer')[0],
+    'itemSelector': '.tweet',
+    'transitionDuration': '0s'
+  });
 });
 
 google.load('visualization', '1.0', {'packages':['corechart']});

@@ -9,6 +9,7 @@
     <script type="text/javascript" src="//www.google.com/jsapi"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/masonry/3.1.1/masonry.pkgd.js"></script>
     <script type="text/javascript" src="script.js"></script>
 
     <script type="text/template" class="template">
@@ -44,7 +45,10 @@
       <div style="clear:both"></div>
 
       <!-- Tweets -->
-      <div id="tweets"></div>
+      <div id="loading" class="loading">Loading ...</div>
+      <div id="tweets">
+        <div class="tweet-sizer"></div>
+      </div>
     </div>
   </body>
 </html>

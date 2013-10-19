@@ -5,7 +5,7 @@ require_once('TwitterQuery.php');
 function twitter_query ($term) {
 	$query = array( // query parameters
 	    'q'     => $term,
-	    'count' => '200',
+	    'count' => 200,
 	    'result_type' => 'mixed',
 	    'lang' => 'es'
 	);
