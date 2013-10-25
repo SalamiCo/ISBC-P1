@@ -26,17 +26,17 @@ function twitter_query ($term) {
 	// }
 }
 
-function process_tweets ($tweets, $lexicon) {
+function process_tweets ($tweets, &$lexicon) {
 	$processed = array();
 
 	if (is_array($tweets)) {
 		foreach ($tweets as $tweet) {
-			$rocText = process_tweet_text($tweet['text']);
+			$procText = process_tweet_text($tweet['text'], $lexicon);
 
 			$processed[] = array(
 				'text' => $tweet['text'],
-				'positive' => mt_rand(0, 8),
-				'negative' => mt_rand(0, 8),
+				'positive' => $procText['positive'],
+				'negative' => $procText['negative']
 			);
 		}
 	}
@@ -78,15 +78,41 @@ function lexicon_stem ($lexicon) {
 	$stemmedLex = array();
 
 	foreach ($lexicon as $word=>$data) {
-		$data['word'] = $word;
 		$stemmedWord = word_stem($word);
 
-		if (isset($stemmedLex[$stemmedWord])) {
-			$stemmedLex[$stemmedWord][] = $data;
-		} else {
-			$stemmedLex[$stemmedWord] = array($data);
+		if (!isset($stemmedLex[$stemmedWord])) {
+			$stemmedLex[$stemmedWord] = array();
 		}
+
+		$stemmedLex[$stemmedWord][$word] = $data;
 	}
 
 	return $stemmedLex;
+}
+
+function lexicon_word_value (&$lexicon, $word) {
+	$stemmed = word_stem($word);
+
+	if (!isset($lexicon[$stemmed])) {
+		return null;
+	}
+
+	if (isset($lexicon[$stemmed][$word])) {
+		return $lexicon[$stemmed][$word];
+
+	} else {
+		$pos = 0;
+		$neg = 0;
+
+		foreach ($lexicon[$stemmed] as $data) {
+			if ($data['value'] == VALUE_POSITIVE) {
+				$pos += $data['number'];
+				
+			} else if ($data['value'] == VALUE_NEGATIVE) {
+				$neg += $data['number'];
+			}
+		}
+
+		return $pos > $neg ? VALUE_POSITIVE : VALUE_NEGATIVE;
+	}
 }
