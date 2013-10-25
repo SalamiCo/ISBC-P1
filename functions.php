@@ -43,6 +43,27 @@ function process_tweets ($tweets, &$lexicon) {
 	return $processed;
 }
 
+function process_tweet_text($text, &$lexicon){
+	$pos = 0;
+	$neg = 0;
+	$words = preg_split("/[^A-Za-z]+/", $text);
+	foreach ($words as $word){
+		$val = lexicon_word_value(&$lexicon, $word);
+
+		if ($val != null){
+			if ($val['value'] == VALUE_POSITIVE) {
+				$pos++;
+			} elseif ( $val['value'] == VALUE_NEGATIVE){
+				$neg++;
+			}
+		}
+	}
+	return array(
+		'positive' => $pos,
+		'negative' => $neg
+	);
+}
+
 function lexicon_read($file_name){
 	$file = fopen($file_name, "r");
 	
