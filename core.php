@@ -22,7 +22,9 @@
 	      'neutral'  => 0,
 	      'negative' => 0
 	    );
-	    $result['tweets'] = process_tweets($queryResult['statuses']);
+
+	    $lexicon = lexicon_stem(lexicon_read('lexicon.txt'));
+	    $result['tweets'] = process_tweets($queryResult['statuses'], $lexicon);
 
 	    foreach ($result['tweets'] as $tweet) {
 	    	$pos = $tweet['positive'];

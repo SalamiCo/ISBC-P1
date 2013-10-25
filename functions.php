@@ -23,11 +23,13 @@ function twitter_query ($term) {
 	// }
 }
 
-function process_tweets ($tweets) {
+function process_tweets ($tweets, $lexicon) {
 	$processed = array();
 
 	if (is_array($tweets)) {
 		foreach ($tweets as $tweet) {
+			process_tweet_text($tweet['text']);
+
 			$processed[] = array(
 				'text' => $tweet['text'],
 				'positive' => mt_rand(0, 8),
