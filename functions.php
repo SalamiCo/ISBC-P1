@@ -36,3 +36,19 @@ function process_tweets ($tweets) {
 	}
 	return $processed;
 }
+
+function lexicon_stem ($lexicon) {
+	$stemmedLex = array();
+
+	foreach ($lexicon as $word=>$data) {
+		$stemmedWord = word_stem($word);
+
+		if (isset($stemmedLex[$stemmedWord])) {
+			$stemmedLex[$stemmedWord][] = $data;
+		} else {
+			$stemmedLex[$stemmedWord] = array($data);
+		}
+	}
+
+	return $stemmedLex;
+}
