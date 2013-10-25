@@ -1,6 +1,7 @@
 <?php
 
 require_once('TwitterQuery.php');
+require_once('stemm_es.php');
 
 function twitter_query ($term) {
 	$query = array( // query parameters
@@ -35,6 +36,10 @@ function process_tweets ($tweets) {
 		}
 	}
 	return $processed;
+}
+
+function word_stem($word){
+	return stemm_es::stemm($word);
 }
 
 function lexicon_stem ($lexicon) {
