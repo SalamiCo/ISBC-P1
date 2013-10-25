@@ -41,6 +41,7 @@ function lexicon_stem ($lexicon) {
 	$stemmedLex = array();
 
 	foreach ($lexicon as $word=>$data) {
+		$data['word'] = $word;
 		$stemmedWord = word_stem($word);
 
 		if (isset($stemmedLex[$stemmedWord])) {
