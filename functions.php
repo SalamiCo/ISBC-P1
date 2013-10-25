@@ -36,3 +36,25 @@ function process_tweets ($tweets) {
 	}
 	return $processed;
 }
+
+function read_lexicon($file_name){
+	$file = fopen($file_name, "r");
+	
+	if($file === false){
+		return null
+	} else {
+		$lexicon = array();
+		while(!feof($file)){
+			$line = fgets($file);
+			$exp = explode("\t", $line);
+			$word = $exp[0];
+			$number = $exp[1];
+			$value = $exp[2];
+			$lexicon[$word] = array(
+				'number'=>$number, 'value'=>$value);
+		}
+	}
+	fclose($file);
+
+	return $lexicon;
+}
