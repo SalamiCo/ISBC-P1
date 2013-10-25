@@ -24,10 +24,6 @@
 	    );
 
 	    $lexicon = lexicon_stem(lexicon_read('lexicon.txt'));
-	    echo '<pre>';
-	    print_r($lexicon, false);
-	    echo '</pre>';
-
 	    $result['tweets'] = process_tweets($queryResult['statuses'], $lexicon);
 
 	    foreach ($result['tweets'] as $tweet) {
