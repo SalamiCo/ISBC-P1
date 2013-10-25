@@ -137,7 +137,8 @@ $(function(){
   msnry = new Masonry($('#tweets')[0], {
     'columnWidth': $('.tweet-sizer')[0],
     'itemSelector': '.tweet',
-    'transitionDuration': '0s'
+    'transitionDuration': '0s',
+    'gutter': 8
   });
 });
 

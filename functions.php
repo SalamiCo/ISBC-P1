@@ -52,15 +52,12 @@ function process_tweet_text($text, &$lexicon){
 	foreach ($words as $word){
 		$wordp = strtolower(iconv('ISO-8859-1','ASCII//TRANSLIT', $word));
 		$val = lexicon_word_value($lexicon, $wordp);
-		// echo "<pre>[$word] => ";
-		// print_r($val);
-		// echo '</pre>';
 
 		if ($val != null){
 			if ($val['value'] == VALUE_POSITIVE) {
-				$pos[] = $word;
+				$pos[] = $val['stem'];
 			} elseif ( $val['value'] == VALUE_NEGATIVE){
-				$neg[] = $word;
+				$neg[] = $val['stem'];
 			}
 		}
 	}
@@ -125,7 +122,7 @@ function lexicon_word_value (&$lexicon, $word) {
 	}
 
 	if (isset($lexicon[$stemmed][$word])) {
-		return $lexicon[$stemmed][$word];
+		$ret = $lexicon[$stemmed][$word];
 
 	} else {
 		$pos = 0;
@@ -140,9 +137,12 @@ function lexicon_word_value (&$lexicon, $word) {
 			}
 		}
 
-		return array(
+		$ret = array(
 			'value'  => ($pos > $neg) ? VALUE_POSITIVE : VALUE_NEGATIVE,
 			'number' => ($pos > $neg) ? $pos - $neg : $neg - $pos
 		);
 	}
+
+	$ret['stem'] = $stemmed;
+	return $ret;
 }

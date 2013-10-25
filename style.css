@@ -40,7 +40,13 @@ h1 {
   display: none;
 }
 
+.tweets {
+  margin: 0 auto;
+  display: inline-block;
+}
+
 /* Tweet styles */
+.tweet, .tweet-sizer {width: 24em}/*
 .tweet, .tweet-sizer {width: 100%;}
 @media screen and (min-width: 500px) and (max-width: 749px) {
   .tweet, .tweet-sizer {width: 50%;}
@@ -53,13 +59,17 @@ h1 {
 }
 @media screen and (min-width: 1250px) {
   .tweet, .tweet-sizer {width: 20%;}
-}
+}*/
 
-.tweet {
+.tweet, .tweet-sizer {
   position: relative;
 
   padding: 1em 0.4em 0.4em 1.2em;
   font-size: 0.8em;
+}
+
+.tweet {
+  margin-bottom: 8px;
 }
 
 .tweet-negative {
