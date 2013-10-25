@@ -3,6 +3,9 @@
 require_once('TwitterQuery.php');
 require_once('stemm_es.php');
 
+define('VALUE_POSITIVE', 'pos');
+define('VALUE_NEGATIVE', 'neg');
+
 function twitter_query ($term) {
 	$query = array( // query parameters
 	    'q'     => $term,
@@ -43,19 +46,23 @@ function process_tweets ($tweets, $lexicon) {
 function lexicon_read($file_name){
 	$file = fopen($file_name, "r");
 	
-	if($file === false){
-		return null
-	} else {
-		$lexicon = array();
-		while(!feof($file)){
-			$line = fgets($file);
-			$exp = explode("\t", $line);
-			$word = $exp[0];
-			$number = $exp[1];
-			$value = $exp[2];
-			$lexicon[$word] = array(
-				'number'=>$number, 'value'=>$value);
-		}
+	if ($file === false) {
+		return null;
+	}
+
+	$lexicon = array();
+	while (!feof($file)) {
+		$line = fgets($file);
+		$exp = explode("\t", $line);
+
+		$word = $exp[0];
+		$number = (int) $exp[1];
+		$value = $exp[2];
+
+		$lexicon[$word] = array(
+			'number'=> $number,
+			'value' => $value
+		);
 	}
 	fclose($file);
 
