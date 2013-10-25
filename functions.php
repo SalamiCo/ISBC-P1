@@ -44,17 +44,23 @@ function process_tweets ($tweets, &$lexicon) {
 }
 
 function process_tweet_text($text, &$lexicon){
-	$pos = 0;
-	$neg = 0;
-	$words = preg_split("/[^A-Za-z]+/", $text);
+	$pos = array();
+	$neg = array();
+
+	$words = preg_split('/((\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+))/',
+		$text, -1, PREG_SPLIT_NO_EMPTY);
 	foreach ($words as $word){
-		$val = lexicon_word_value(&$lexicon, $word);
+		$wordp = strtolower(iconv('ISO-8859-1','ASCII//TRANSLIT', $word));
+		$val = lexicon_word_value($lexicon, $wordp);
+		// echo "<pre>[$word] => ";
+		// print_r($val);
+		// echo '</pre>';
 
 		if ($val != null){
 			if ($val['value'] == VALUE_POSITIVE) {
-				$pos++;
+				$pos[] = $word;
 			} elseif ( $val['value'] == VALUE_NEGATIVE){
-				$neg++;
+				$neg[] = $word;
 			}
 		}
 	}
@@ -134,6 +140,9 @@ function lexicon_word_value (&$lexicon, $word) {
 			}
 		}
 
-		return $pos > $neg ? VALUE_POSITIVE : VALUE_NEGATIVE;
+		return array(
+			'value'  => ($pos > $neg) ? VALUE_POSITIVE : VALUE_NEGATIVE,
+			'number' => ($pos > $neg) ? $pos - $neg : $neg - $pos
+		);
 	}
 }

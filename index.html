@@ -15,8 +15,12 @@
     <script type="text/template" class="template">
       <article class="tweet <%- tpl.class %>">
         <div class="text"><%- tpl.tweet.text %></div>
-        <aside class="positive">+<%- tpl.tweet.positive %></aside>
-        <aside class="negative">-<%- tpl.tweet.negative %></aside>
+        <% _.each(tpl.tweet.positive, function(word){ %>
+          <aside class="positive"><%- word %></aside>
+        <% }); %>
+        <% _.each(tpl.tweet.negative, function(word){ %>
+        <aside class="negative"><%- word %></aside>
+        <% }); %>
       </article>
     </script>
   </head>

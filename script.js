@@ -61,12 +61,13 @@ function performSearch (searchTerm) {
         $('#tweets .tweet').remove();
 
         for (var t in resp.tweets) {
-          var tws = resp.tweets[t]
+          var tws = resp.tweets[t];
+          console.log(tws);
           var tplData = {
             'tweet': tws,
             'class':
-                tws.positive>tws.negative?'tweet-positive'
-              : tws.positive<tws.negative?'tweet-negative'
+                tws.positive.length>tws.negative.length?'tweet-positive'
+              : tws.positive.length<tws.negative.length?'tweet-negative'
               : 'tweet-neutral'
           };
           console.log(tplData);
