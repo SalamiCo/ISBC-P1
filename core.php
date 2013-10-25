@@ -15,6 +15,7 @@
     if (isset($queryResult['errors'])) {
 	    $result['status'] = 'error_api';
 	    $result['error'] = 'API returned errors';
+	    $result['api_errors'] = $queryResult['errors'];
 
     } else {
 	    $result['status'] = 'ok';
