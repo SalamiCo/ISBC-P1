@@ -28,7 +28,7 @@ function process_tweets ($tweets, $lexicon) {
 
 	if (is_array($tweets)) {
 		foreach ($tweets as $tweet) {
-			process_tweet_text($tweet['text']);
+			$rocText = process_tweet_text($tweet['text']);
 
 			$processed[] = array(
 				'text' => $tweet['text'],
