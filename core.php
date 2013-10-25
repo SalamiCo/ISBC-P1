@@ -2,6 +2,7 @@
   
   require_once('functions.php');
 
+  error_reporting(0);
   $result = array('status' => 'error_unknown');
 
   if (!isset($_GET['term'])) {
