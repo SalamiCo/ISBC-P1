@@ -70,7 +70,8 @@ function lexicon_read($file_name){
 }
 
 function word_stem($word){
-	return stemm_es::stemm($word);
+	$stemmer = new stemm_es();
+	return $stemmer->stemm($word);
 }
 
 function lexicon_stem ($lexicon) {
