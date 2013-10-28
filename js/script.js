@@ -1,4 +1,4 @@
-var msnry;
+var packery;
 
 /**
  * Shows a essage indicating an error or other condition.
@@ -62,7 +62,6 @@ function performSearch (searchTerm) {
 
         for (var t in resp.tweets) {
           var tws = resp.tweets[t];
-          console.log(tws);
           var tplData = {
             'tweet': tws,
             'class':
@@ -75,8 +74,8 @@ function performSearch (searchTerm) {
         }
       }
 
-      msnry.reloadItems();
-      msnry.layout();
+      packery.reloadItems();
+      packery.layout();
     });
   }
 }
@@ -132,14 +131,41 @@ function onSearchSubmit () {
 $(function(){
   _.templateSettings.variable = "tpl";
   $('#form-search').on('submit', onSearchSubmit);
-  drawChart($('#summary')[0], {positive: 0, negative: 0, neutral: 1});
   
-  msnry = new Masonry($('#tweets')[0], {
+  packery = new Packery($('#tweets')[0], {
     'columnWidth': $('.tweet-sizer')[0],
+    'gutter': $('.tweet-gutter-sizer')[0],
+    'stamp': '.stamp',
     'itemSelector': '.tweet',
     'transitionDuration': '0s',
-    'gutter': 8
   });
+
+  /* DEBUG START */
+  var template = _.template($( "script.template" ).html());
+  var eltTweets = $('#tweets');
+  for (var i = 0; i < 100; i++) {
+    var tplData = {
+      'tweet': {
+        'text': 'El veloz murciélago hindú comía feliz cardillo y kiwi',
+        'user': {
+          'name': 'Regular Name ' + i,
+          'screenName': 'AtName' + i,
+          'avatar': 'https://pbs.twimg.com/profile_images/2286543278/vu1n5pli5gy2z1mynfed_normal.jpeg'
+        },
+        'geo': null,
+        'positive': ['a'],
+        'negative': ['b']
+      },
+      'class': 'tweet-neutral'
+    };
+    eltTweets.append(template(tplData));
+  }
+
+  packery.reloadItems();
+  packery.layout();
+  /* DEBUG END */
 });
 
-google.load('visualization', '1.0', {'packages':['corechart']});
+if (google) {
+  google.load('visualization', '1.0', {'packages':['corechart']});
+}

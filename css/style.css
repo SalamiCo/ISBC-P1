@@ -1,0 +1,179 @@
+/* The solution to the universe's problems */
+* { box-sizing: border-box; }
+body { padding: 0; margin: 0; font-size: 16px;}
+
+.full-wrap {
+  position: relative;
+
+  width: 100%;
+
+  min-height: 100%;
+
+  margin: 0 auto;
+}
+
+h1 {
+  width: 100%;
+
+  margin: 0;
+  padding: 0;
+
+  text-align: center;
+  font-family: Bevan;
+  font-weight: 400;
+  font-size: 2em;
+}
+
+.summary {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  width: 16em;
+  height: 16em;
+}
+
+.search-form {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 16.5em;
+
+  width: auto;
+  height: 2.5em;
+}
+
+.search-form .text, .search-form .button {
+  -o-border-radius: 0.35em;
+  -ms-border-radius: 0.35em;
+  -moz-border-radius: 0.35em;
+  -webkit-border-radius: 0.35em;
+  border-radius: 0.35em;
+}
+
+.search-form .text {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 6.285714285714286em;
+
+  height: 1.42857142857143em;
+  padding: 0.1em 0.6em;
+
+
+  font-size: 1.75em;
+
+  border: 1px solid #DDD;
+  border-bottom-width: 2px;
+}
+
+.search-form .button {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  width: 6em;
+  height: 1.42857142857143em;
+
+  font-size: 1.75em;
+
+  border: 1px solid #999;
+  border-bottom-width: 2px;
+}
+
+.search-form .button:active {
+  border: 1px solid #888;
+  border-top-width: 3px;
+}
+
+.loading {
+  display: none;
+}
+
+.tweets {
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Tweet styles */
+.tweet, .tweet-sizer {width: 16em;}
+.tweet-gutter-sizer {width: 0.5em;}
+
+@media screen and (max-width: 535px) {
+  .tweets {width: 16em;}
+}
+@media screen and (min-width: 536px) and (max-width: 799px) {
+  .tweets {width: 32.5em;}
+}
+@media screen and (min-width: 800px) and (max-width: 1063px) {
+  .tweets {width: 49em;}
+}
+@media screen and (min-width: 1064px)  and (max-width: 1327px) {
+  .tweets {width: 65.5em;}
+}
+@media screen and (min-width: 1328px) {
+  .tweets {width: 82em;}
+}
+
+.tweet {
+  position: relative;
+  padding: 1em 0.4em 0.4em 1.2em;
+
+  border: 1px solid black;
+  border-bottom-width: 2px;
+
+  -o-border-radius: 0.4em;
+  -ms-border-radius: 0.4em;
+  -moz-border-radius: 0.4em;
+  -webkit-border-radius: 0.4em;
+  border-radius: 0.4em;
+}
+
+.tweet-negative {
+  background-color: #EAA;
+  border-color: #C88;
+}
+.tweet-positive {
+  background-color: #AEA;
+  border-color: #8C8;
+}
+.tweet-neutral {
+  background-color: #E7E7E7;
+  border-color: #C0C0C0;
+}
+
+
+/* Asides indicating positive/negative score */
+.tweet .negative, .tweet .positive {
+  -o-border-radius: 0.625em;
+  -ms-border-radius: 0.625em;
+  -moz-border-radius: 0.625em;
+  -webkit-border-radius: 0.625em;
+  border-radius: 0.625em;
+
+  float: right;
+  position: relative;
+
+  padding: 0.25em 0.8em;
+  margin: 0 0.2em;
+
+  font-size: 0.7em;
+  font-weight: bold;
+  font-style: italic;
+  color: white;
+
+  line-height: 100%;
+}
+
+.tweet .negative {
+  background-color: #D00;
+}
+
+.tweet .positive {
+  background-color: #0A0;
+}
+
+.tweet .text, .tweet .user {
+  font-size: 0.8em;
+}

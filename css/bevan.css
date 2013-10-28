@@ -1,0 +1,7 @@
+@font-face {
+  font-family: 'Bevan';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Bevan'),
+    url(../font/Bevan.woff) format('woff');
+}

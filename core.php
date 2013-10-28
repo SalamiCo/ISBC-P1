@@ -45,4 +45,4 @@
 
   /* Return the result array as JSON */
   header('Content-Type: application/json');
-  echo json_encode($result);
+  echo json_encode($result, JSON_PRETTY_PRINT);

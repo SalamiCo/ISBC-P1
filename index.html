@@ -3,23 +3,31 @@
   <head>
     <title>Twitter Sentiment Analysis</title>
 
-    <link href='//fonts.googleapis.com/css?family=Bevan' rel='stylesheet' type='text/css'>
-    <link type="text/css" rel="stylesheet" href="style.css" />
+    <link href="css/bevan.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript" src="//www.google.com/jsapi"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/masonry/3.1.1/masonry.pkgd.js"></script>
-    <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/underscore.js"></script>
+    <script type="text/javascript" src="js/packery.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
 
     <script type="text/template" class="template">
       <article class="tweet <%- tpl.class %>">
+        <div class="avatar"><img width="48" height="48" src="image.php?url=<%- encodeURIComponent(tpl.tweet.user.avatar) %>" /></div>
+        <div class="user">
+          <%- tpl.tweet.user.name %>
+          @<%- tpl.tweet.user.screenName %>
+        </div>
         <div class="text"><%- tpl.tweet.text %></div>
+        <div class="geo"><% if (tpl.tweet.geo) { %>GEO<% } %></div>
+
         <% _.each(tpl.tweet.positive, function(word){ %>
-          <aside class="positive"><%- word %></aside>
+          <aside class="positive">+ <%- word %></aside>
         <% }); %>
+
         <% _.each(tpl.tweet.negative, function(word){ %>
-        <aside class="negative"><%- word %></aside>
+        <aside class="negative">- <%- word %></aside>
         <% }); %>
       </article>
     </script>
@@ -30,28 +38,16 @@
       <!-- Messages -->
       <div id="messages"></div>
 
-      <!-- Results summary -->
-      <div id="summary" class="summary"></div>
-
-      <!-- Page Header -->
-      <header>
-        <!-- Main Title -->
-        <h1>Twitter Sentiment Analysis</h1>
-
-        <!-- Search Form -->
-        <form id="form-search" name="search" action="#">
-          <input id="form-search-term" type="search" name="term" placeholder="Enter a Twitter search term"/>
-          <input id="form-search-send" type="submit" value="Search" />
-        </form>
-      </header>
-
-      <!-- Clear -->
-      <div style="clear:both"></div>
-
       <!-- Tweets -->
       <div id="loading" class="loading">Loading ...</div>
-      <div id="tweets">
+      <div id="tweets" class="tweets">
+        <form id="form-search" class="search-form stamp" name="search" action="#">
+          <input id="form-search-term" class="text" type="search" name="term" placeholder="Enter a Twitter search term"/>
+          <input id="form-search-send" class="button" type="submit" value="Search" />
+        </form>
+        <div id="summary" class="summary stamp"></div>
         <div class="tweet-sizer"></div>
+        <div class="tweet-gutter-sizer"></div>
       </div>
     </div>
   </body>

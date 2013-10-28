@@ -26,7 +26,7 @@ function twitter_query ($term) {
 	// }
 }
 
-function process_tweets ($tweets, &$lexicon) {
+function process_tweets (&$tweets, &$lexicon) {
 	$processed = array();
 
 	if (is_array($tweets)) {
@@ -35,6 +35,12 @@ function process_tweets ($tweets, &$lexicon) {
 
 			$processed[] = array(
 				'text' => $tweet['text'],
+				'user' => array(
+					'name' => $tweet['user']['name'],
+					'screenName' => $tweet['user']['screen_name'],
+					'avatar' => $tweet['user']['profile_image_url_https']
+				),
+				'geo' => $tweet['coordinates'],
 				'positive' => $procText['positive'],
 				'negative' => $procText['negative']
 			);
