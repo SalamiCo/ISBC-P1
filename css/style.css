@@ -66,6 +66,14 @@ h1 {
 
   border: 1px solid #DDD;
   border-bottom-width: 2px;
+
+  background-color: #F7F7F7;
+}
+
+.search-form .text:focus {
+  border-color: #AAA;
+  background-color: #FFF;
+  outline: none;
 }
 
 .search-form .button {
