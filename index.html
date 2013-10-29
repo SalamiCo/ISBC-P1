@@ -14,13 +14,13 @@
 
     <script type="text/template" class="template">
       <article class="tweet <%- tpl.class %>">
-        <div class="avatar"><img width="48" height="48" src="image.php?url=<%- encodeURIComponent(tpl.tweet.user.avatar) %>" /></div>
+        <img class="avatar" width="48" height="48" src="image.php?url=<%- encodeURIComponent(tpl.tweet.user.avatar) %>" />
+        <% if (tpl.tweet.geo) { %><img class="geo" src="img/geo.png" /><% } %>
         <div class="user">
-          <%- tpl.tweet.user.name %>
-          @<%- tpl.tweet.user.screenName %>
+          <p class="name"><%- tpl.tweet.user.name %></p>
+          <p class="screenName">@<%- tpl.tweet.user.screenName %></p>
         </div>
         <div class="text"><%- tpl.tweet.text %></div>
-        <div class="geo"><% if (tpl.tweet.geo) { %>GEO<% } %></div>
 
         <% _.each(tpl.tweet.positive, function(word){ %>
           <aside class="positive">+ <%- word %></aside>
@@ -35,11 +35,13 @@
 
   <body>
     <div class="full-wrap">
+
       <!-- Messages -->
-      <div id="messages"></div>
+      <div id="loading" class="loading">
+        <img src="img/loading.gif" />
+      </div>
 
       <!-- Tweets -->
-      <div id="loading" class="loading">Loading ...</div>
       <div id="tweets" class="tweets">
         <form id="form-search" class="search-form stamp" name="search" action="#">
           <input id="form-search-term" class="text" type="search" name="term" placeholder="Enter a Twitter search term"/>
@@ -48,6 +50,7 @@
         <div id="summary" class="summary stamp"></div>
         <div class="tweet-sizer"></div>
         <div class="tweet-gutter-sizer"></div>
+        <div id="messages" class="stamp"></div>
       </div>
     </div>
   </body>

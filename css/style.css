@@ -6,7 +6,6 @@ body { padding: 0; margin: 0; font-size: 16px;}
   position: relative;
 
   width: 100%;
-
   min-height: 100%;
 
   margin: 0 auto;
@@ -22,6 +21,19 @@ h1 {
   font-family: Bevan;
   font-weight: 400;
   font-size: 2em;
+}
+
+.loading {
+  position: fixed;
+
+  left: 50%;
+  top: 50%;
+
+  margin-left: -31px;
+  margin-right: -32px;
+
+  z-index: 128;
+  display: none;
 }
 
 .summary {
@@ -41,6 +53,8 @@ h1 {
 
   width: auto;
   height: 2.5em;
+
+  padding: 0;
 }
 
 .search-form .text, .search-form .button {
@@ -60,6 +74,7 @@ h1 {
 
   height: 1.42857142857143em;
   padding: 0.1em 0.6em;
+  margin: 0;
 
 
   font-size: 1.75em;
@@ -88,6 +103,13 @@ h1 {
 
   border: 1px solid #999;
   border-bottom-width: 2px;
+
+  background-color: #CCC;
+}
+
+.search-form .button:hover {
+  background-color: #DDD;
+  border-color: #AAA;
 }
 
 .search-form .button:active {
@@ -95,13 +117,34 @@ h1 {
   border-top-width: 3px;
 }
 
-.loading {
-  display: none;
-}
-
 .tweets {
   margin: 0 auto;
   position: relative;
+}
+
+#messages {
+  position: absolute;
+  top: 3em;
+}
+
+#messages div {
+  -o-border-radius: 0.4em;
+  -ms-border-radius: 0.4em;
+  -moz-border-radius: 0.4em;
+  -webkit-border-radius: 0.4em;
+  border-radius: 0.4em;
+
+  float: left;
+  clear: left;
+
+  background-color: #EE8;
+
+  border: 1px solid #880;
+  border-bottom-width: 2px;
+
+  font-size: 0.8em;
+  padding: 0.2em 0.5em;
+  margin-bottom: 0.5em;
 }
 
 /* Tweet styles */
@@ -126,7 +169,7 @@ h1 {
 
 .tweet {
   position: relative;
-  padding: 1em 0.4em 0.4em 1.2em;
+  padding: 0.5em;
 
   border: 1px solid black;
   border-bottom-width: 2px;
@@ -153,7 +196,7 @@ h1 {
 
 
 /* Asides indicating positive/negative score */
-.tweet .negative, .tweet .positive {
+.tweet aside.negative, .tweet aside.positive {
   -o-border-radius: 0.625em;
   -ms-border-radius: 0.625em;
   -moz-border-radius: 0.625em;
@@ -172,16 +215,67 @@ h1 {
   color: white;
 
   line-height: 100%;
+  opacity: 0.8;
 }
 
-.tweet .negative {
+.tweet aside.negative {
   background-color: #D00;
 }
 
-.tweet .positive {
+.tweet aside.positive {
   background-color: #0A0;
 }
 
 .tweet .text, .tweet .user {
   font-size: 0.8em;
+}
+
+.tweet .text {
+  clear: both;
+  padding: 0.5em 0.2em;
+}
+
+.tweet .avatar {
+  display: block;
+  float: left;
+
+  padding: 0;
+  margin-right: 0.5em;
+  margin-bottom: 0.3em;
+
+  -moz-box-shadow: 0 0.15em 0.3em 0 rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0.15em 0.3em 0 rgba(0, 0, 0, 0.5);
+  -o-box-shadow: 0 0.15em 0.3em 0 rgba(0, 0, 0, 0.5);
+  -ms-box-shadow: 0 0.15em 0.3em 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0.15em 0.3em 0 rgba(0, 0, 0, 0.5);
+
+  -o-border-radius: 0.25em;
+  -ms-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  -webkit-border-radius: 0.25em;
+  border-radius: 0.25em;
+
+}
+
+.tweet .geo {
+  float: right;
+  opacity: 0.3;
+}
+
+.tweet .user {
+  float: left;
+}
+
+.tweet .user p {
+  padding: 0;
+  margin: 0;
+}
+
+.tweet .user .name {
+  font-weight: bold;
+}
+
+.tweet .user .screenName {
+  font-size: 0.9em;
+  color: rgba(0, 0, 0, 0.5);
 }

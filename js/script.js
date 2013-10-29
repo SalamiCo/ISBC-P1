@@ -18,10 +18,20 @@ function showMessage (type, message, duration) {
   var cont = $('#messages');
   cont.append(elt);
 
+  elt.css({'margin-left': '256px', 'opacity': -0.5});
+  elt.animate({'margin-left': 0, 'opacity': 1}, 1000);
+
   // Remove it in some time
   setTimeout(function(){
-    elt.remove();
-  }, Math.max(1500, Math.min(5000, duration||2500)));
+    elt.animate({'margin-left': '-256px', 'opacity': -0.5}, 1000, function(){
+      elt.remove();
+      packery.reloadItems();
+      packery.layout();
+    });
+  }, 1000 + Math.max(1500, Math.min(5000, duration||2500)));
+
+  packery.reloadItems();
+  packery.layout();
 }
 
 /**
@@ -33,9 +43,12 @@ function showMessage (type, message, duration) {
 function performSearch (searchTerm) {
   if (!searchTerm.match(/\S/)) {
     showMessage('error', 'Enter a search term!');
+
   } else {
     $('#form-search-send').attr('disabled','disabled');
     $('#loading').show();
+    $('#summary').hide();
+    $('.tweet').remove();
 
     var ajax = $.ajax({
       url: 'core.php',
@@ -54,11 +67,11 @@ function performSearch (searchTerm) {
         showMessage('error', 'Error in request: [' + resp.status + '] ' + resp.error);
 
       } else {
+        $('#summary').show();
         drawChart($('#summary')[0], resp.summary);
 
         var template = _.template($( "script.template" ).html());
         var eltTweets = $('#tweets');
-        $('#tweets .tweet').remove();
 
         for (var t in resp.tweets) {
           var tws = resp.tweets[t];
@@ -69,7 +82,6 @@ function performSearch (searchTerm) {
               : tws.positive.length<tws.negative.length?'tweet-negative'
               : 'tweet-neutral'
           };
-          console.log(tplData);
           eltTweets.append(template(tplData));
         }
       }
@@ -91,29 +103,46 @@ function drawChart (element, chartData) {
   data.addColumn('string', 'Type');
   data.addColumn('number', 'Amount');
   data.addRows([
-    ['Positive', chartData.positive],
+    ['Negative', chartData.negative],
     ['Neutral', chartData.neutral],
-    ['Negative', chartData.negative]
+    ['Positive', chartData.positive]
   ]);
 
   // Set chart options
   var options = {
-    'title':  'Results Summary',
-    'width':  $(element).width(), 'height': $(element).height(),
-    'colors': ['#0A0', '#CCC', '#D00'],
+    'width':  $(element).width(),
+    'height': $(element).height(),
+    'colors': ['#D00', '#CCC', '#0A0'],
     'backgroundColor': {
         'opacity': 0
      },
-     'legend': {'position': 'none'},
-     'title': {'position': 'none'},
-     'chartArea': {
-        'width': '90%', 'height': '90%'
-      }
+   'legend': {'position': 'none'},
+   'title': {'position': 'none'},
+   'chartArea': {
+      'width': '90%', 'height': '90%'
+    }
   };
 
   // Instantiate and draw our chart, passing in some options.
   var chart = new google.visualization.PieChart(element);
   chart.draw(data, options);
+  google.visualization.events.addListener(chart, 'select', function(){
+    var select = chart.getSelection();
+
+    if (select.length == 0) {
+      $('.tweet-negative, .tweet-positive, .tweet-neutral').show();
+    } else {
+      $('.tweet-negative, .tweet-positive, .tweet-neutral').hide();
+
+      for (var s in select) {
+        var row = select[s].row;
+        var cls = '.tweet-' + (['negative', 'neutral', 'positive'][row]);
+        $(cls).show();
+      }
+    }
+
+    packery.layout();
+  });
 }
 
 /**
@@ -137,33 +166,10 @@ $(function(){
     'gutter': $('.tweet-gutter-sizer')[0],
     'stamp': '.stamp',
     'itemSelector': '.tweet',
-    'transitionDuration': '0s',
+    'transitionDuration': '300ms',
   });
 
-  /* DEBUG START */
-  var template = _.template($( "script.template" ).html());
-  var eltTweets = $('#tweets');
-  for (var i = 0; i < 100; i++) {
-    var tplData = {
-      'tweet': {
-        'text': 'El veloz murciélago hindú comía feliz cardillo y kiwi',
-        'user': {
-          'name': 'Regular Name ' + i,
-          'screenName': 'AtName' + i,
-          'avatar': 'https://pbs.twimg.com/profile_images/2286543278/vu1n5pli5gy2z1mynfed_normal.jpeg'
-        },
-        'geo': null,
-        'positive': ['a'],
-        'negative': ['b']
-      },
-      'class': 'tweet-neutral'
-    };
-    eltTweets.append(template(tplData));
-  }
-
-  packery.reloadItems();
-  packery.layout();
-  /* DEBUG END */
+  
 });
 
 if (google) {

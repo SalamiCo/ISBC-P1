@@ -7,4 +7,5 @@
         file_put_contents($file, file_get_contents($url));
     }
 
+    header('Content-Type: image/jpeg');
     echo file_get_contents($file);
