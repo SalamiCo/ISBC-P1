@@ -1,4 +1,6 @@
-var packery;
+var packery = null;
+var gmap = null;
+var gmapMarkers = [];
 
 /**
  * Shows a essage indicating an error or other condition.
@@ -50,6 +52,11 @@ function performSearch (searchTerm) {
     $('#summary').hide();
     $('.tweet').remove();
 
+    _.each(gmapMarkers, function(obj){
+      obj.marker.setMap(null);
+    });
+    gmapMarkers = [];
+
     var ajax = $.ajax({
       url: 'core.php',
       type: 'GET',
@@ -73,16 +80,50 @@ function performSearch (searchTerm) {
         var template = _.template($( "script.template" ).html());
         var eltTweets = $('#tweets');
 
+        var bounds = new google.maps.LatLngBounds();
+
         for (var t in resp.tweets) {
           var tws = resp.tweets[t];
+          tws.user.avatar = 'image.php?url=' + encodeURIComponent(tws.user.avatar);
+
+          var type = tws.positive.length>tws.negative.length?'positive'
+              : tws.positive.length<tws.negative.length?'negative'
+              : 'neutral';
+
           var tplData = {
             'tweet': tws,
-            'class':
-                tws.positive.length>tws.negative.length?'tweet-positive'
-              : tws.positive.length<tws.negative.length?'tweet-negative'
-              : 'tweet-neutral'
+            'class': 'tweet-' + type
           };
-          eltTweets.append(template(tplData));
+          var twelt = template(tplData);
+          eltTweets.append(twelt);
+
+          // Geographic data
+          if (tws.geo) {
+            var pos = new google.maps.LatLng(
+              tws.geo.coordinates[1],
+              tws.geo.coordinates[0]
+            );
+
+            var marker = new google.maps.Marker({
+              'position': pos,
+              'map': gmap,
+              'icon': {
+                'url': tws.user.avatar + '&marker=' + type,
+                'size': new google.maps.Size(24, 28),
+                'scaledSize': new google.maps.Size(24, 28),
+                'origin': new google.maps.Point(0,0),
+                'anchor': new google.maps.Point(12, 28)
+              },
+            });
+
+            gmapMarkers.push({'marker': marker});
+            bounds.extend(pos);
+          }
+        }
+
+        gmap.fitBounds(bounds);
+        if (gmap.getZoom() > 18) {
+          gmap.setZoom(18);
         }
       }
 
@@ -174,4 +215,26 @@ $(function(){
 
 if (google) {
   google.load('visualization', '1.0', {'packages':['corechart']});
+  
+  google.maps.visualRefresh = true;
+  google.maps.event.addDomListener(window, 'load', function(){
+    var mapOptions = {
+      center: new google.maps.LatLng(40.40, -3.68),
+      zoom: 5,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+
+      panControl: false,
+      zoomControl: true,
+      mapTypeControl: false,
+      scaleControl: false,
+      streetViewControl: false,
+      overviewMapControl: false,
+
+      zoomControlOptions: {
+        style: google.maps.ZoomControlStyle.SMALL
+      }
+    };
+    gmap = new google.maps.Map(document.getElementById("map-canvas"),
+        mapOptions);
+  });
 }
