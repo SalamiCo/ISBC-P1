@@ -12,7 +12,10 @@ body { padding: 0; margin: 0; font-size: 16px;}
 }
 
 h1 {
-  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 8.25em;
 
   margin: 0;
   padding: 0;
@@ -21,6 +24,9 @@ h1 {
   font-family: Bevan;
   font-weight: 400;
   font-size: 2em;
+
+  color: #00aced;
+  text-shadow: 0 0.05em 0.05em rgba(0, 0, 0, 0.7);
 }
 
 .loading {
@@ -47,7 +53,7 @@ h1 {
 
 .search-form {
   position: absolute;
-  top: 0;
+  top: 3.5em;
   left: 0;
   right: 16.5em;
 
