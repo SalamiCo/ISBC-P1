@@ -152,3 +152,40 @@ function lexicon_word_value (&$lexicon, $word) {
 	$ret['stem'] = $stemmed;
 	return $ret;
 }
+
+function global_frec (&$tweets) {
+	$frec = array();
+	if (is_array($tweets)) {
+		foreach ($tweets as $tweet) {
+			$words = preg_split('/((\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+))/',
+				strtolower($tweet['text']), -1, PREG_SPLIT_NO_EMPTY);
+
+			foreach (array_unique($words) as $word) {
+				if(!isset($frec[$word])) {
+					$frec[$word] = 1;
+				} else {
+					$frec[$word]++;
+				}
+			}
+		}
+	}
+	return $frec;
+}
+
+//TODO: hacer tf_idf para cada tweet => sacar el peso de cada palabra del tweet 
+// function tf_idf (&$tweets, $frec) {
+// 	$wp = array();
+// 	if (is_array($tweets)) {
+// 		$D = count($tweets);
+// 		foreach ($tweets as $tweet) {
+// 			$words = preg_split('/((\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+))/',
+// 				strtolower($tweet['text']), -1, PREG_SPLIT_NO_EMPTY);
+// 			$tfd = array_count_values($words);
+// 			foreach (array_unique($words) as $word) {
+// 				$idfp = $D / $frec[$word];
+// 				$wp[para el tweet i][$word] = $tfd[$word] * $idfp;
+// 			}
+// 		}
+// 	}
+// 	return $wp;
+// }
