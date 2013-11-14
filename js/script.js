@@ -116,6 +116,14 @@ function performSearch (searchTerm) {
               },
             });
 
+            var infowindow = new google.maps.InfoWindow({
+                'content': tws.text
+            });
+
+            google.maps.event.addListener(marker, 'click', function(){
+              infowindow.open(gmap, marker);
+            });
+
             gmapMarkers.push({'marker': marker});
             bounds.extend(pos);
           }
