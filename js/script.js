@@ -116,10 +116,6 @@ function performSearch (searchTerm) {
               },
             });
 
-            var infowindow = new google.maps.InfoWindow({
-                'content': tws.text
-            });
-
             google.maps.event.addListener(marker, 'click', function(){
               infowindow.open(gmap, marker);
             });
@@ -130,8 +126,8 @@ function performSearch (searchTerm) {
         }
 
         gmap.fitBounds(bounds);
-        if (gmap.getZoom() > 18) {
-          gmap.setZoom(18);
+        if (gmap.getZoom() > 16) {
+          gmap.setZoom(16);
         }
       }
 
@@ -242,6 +238,7 @@ if (google) {
         style: google.maps.ZoomControlStyle.SMALL
       }
     };
+    
     gmap = new google.maps.Map(document.getElementById("map-canvas"),
         mapOptions);
   });

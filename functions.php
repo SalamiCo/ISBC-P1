@@ -33,8 +33,9 @@ function process_tweets (&$tweets, &$lexicon) {
 		foreach ($tweets as $tweet) {
 			$procText = process_tweet_text($tweet['text'], $lexicon);
 
-			$processed[] = array(
+			$procTweet = array(
 				'text' => $tweet['text'],
+				'words' => $procText['words'],
 				'user' => array(
 					'name' => $tweet['user']['name'],
 					'screenName' => $tweet['user']['screen_name'],
@@ -44,6 +45,10 @@ function process_tweets (&$tweets, &$lexicon) {
 				'positive' => $procText['positive'],
 				'negative' => $procText['negative']
 			);
+
+			$postProcessed = postprocess_tweet($procTweet);
+			unset($postProcessed['words']);
+			$processed[] = $postProcessed;
 		}
 	}
 	return $processed;
@@ -55,8 +60,11 @@ function process_tweet_text($text, &$lexicon){
 
 	$words = preg_split('/((\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+))/',
 		$text, -1, PREG_SPLIT_NO_EMPTY);
+
+	$pwords = array();
+
 	foreach ($words as $word){
-		$wordp = strtolower(iconv('ISO-8859-1','ASCII//TRANSLIT', $word));
+		$wordp = @strtolower(iconv('ISO-8859-1','ASCII//TRANSLIT', $word));
 		$val = lexicon_word_value($lexicon, $wordp);
 
 		if ($val != null){
@@ -66,8 +74,12 @@ function process_tweet_text($text, &$lexicon){
 				$neg[] = $val['stem'];
 			}
 		}
+
+		$pwords[] = word_stem($word);
 	}
+
 	return array(
+		'words' => $pwords,
 		'positive' => $pos,
 		'negative' => $neg
 	);
@@ -100,8 +112,7 @@ function lexicon_read($file_name){
 }
 
 function word_stem($word){
-	$stemmer = new stemm_es();
-	return $stemmer->stemm($word);
+	return stemm_es::stemm($word);
 }
 
 function lexicon_stem ($lexicon) {
@@ -170,6 +181,13 @@ function global_wordcount (&$tweets) {
 		}
 	}
 	return $frec;
+}
+
+function postprocess_tweet (&$tweet) {
+	$pText = implode(' ', $tweet['words']);
+
+
+	return $tweet;
 }
 
 //TODO: hacer tf_idf para cada tweet => sacar el peso de cada palabra del tweet 
