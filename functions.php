@@ -153,39 +153,70 @@ function lexicon_word_value (&$lexicon, $word) {
 	return $ret;
 }
 
-function global_wordcount (&$tweets) {
-	$frec = array();
+function global_wordcount (&$tweets, &$lexicon) {
+	$freq = array();
 	if (is_array($tweets)) {
 		foreach ($tweets as $tweet) {
 			$words = preg_split('/((\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+))/',
-				strtolower($tweet['text']), -1, PREG_SPLIT_NO_EMPTY);
+				$tweet['text'], -1, PREG_SPLIT_NO_EMPTY);
 
 			foreach (array_unique($words) as $word) {
-				if(!isset($frec[$word])) {
-					$frec[$word] = 1;
-				} else {
-					$frec[$word]++;
+				//add lexicon words not previously added
+				$stem = word_stem($word);
+				if(isset($lexicon[$stem]) && !isset($freq[$stem])) {
+					$freq[$stem] = 1;
+				} else if(isset($lexicon[$stem]) && isset($freq[$stem])){
+					$freq[$stem]++;
 				}
 			}
 		}
 	}
-	return $frec;
+	return $freq;
 }
 
 //TODO: hacer tf_idf para cada tweet => sacar el peso de cada palabra del tweet 
-// function tf_idf (&$tweets, $frec) {
-// 	$wp = array();
-// 	if (is_array($tweets)) {
-// 		$D = count($tweets);
-// 		foreach ($tweets as $tweet) {
-// 			$words = preg_split('/((\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+))/',
-// 				strtolower($tweet['text']), -1, PREG_SPLIT_NO_EMPTY);
-// 			$tfd = array_count_values($words);
-// 			foreach (array_unique($words) as $word) {
-// 				$idfp = $D / $frec[$word];
-// 				$wp[para el tweet i][$word] = $tfd[$word] * $idfp;
-// 			}
-// 		}
-// 	}
-// 	return $wp;
-// }
+function tf_idf (&$tweets, &$lexicon) {
+	if (is_array($tweets)) {		
+		$freq = global_wordcount($tweets, $lexicon);
+		$filter = array(); 
+
+		$D = count($tweets); //Corpus length
+		foreach ($tweets as $tweet) {
+			$words = preg_split('/((\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+))/',
+				$tweet['text'], -1, PREG_SPLIT_NO_EMPTY);
+
+			$local_freq = array();
+			$local_wordcount = count($words);
+			foreach ($words as $word) {
+				//calculate local frequency for each word
+				$stem = word_stem($word);
+				if(isset($lexicon[$stem]) && !isset($local_freq[$stem])) {
+					$local_freq[$stem] = 1;
+				} else if(isset($lexicon[$stem]) && isset($local_freq[$stem])){
+					$local_freq[$stem]++;
+				}
+			}
+			
+			//filter the minimum TF-IDF if there are more of than word
+			$min_wp = PHP_INT_MAX;
+			$filtered = null;
+			$keys = array_keys($local_freq);
+
+			if (count($keys) > 1) {
+				foreach ($keys as $key) {						
+					$tf  = $local_freq[$key] / $local_wordcount;
+					$idf = log($D / $freq[$key], 2);				
+					$wp = $tf * $idf;
+					
+					if($wp < $min_wp) {
+						$min_wp = $wp;
+						$filtered = $key;
+					}
+				}
+			}	
+			//filter[i] = filtered word for tweet i, else null
+			$filter[] = $filtered;		
+		}		
+	}
+	return $filter;
+}
