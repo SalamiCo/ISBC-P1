@@ -28,10 +28,10 @@
 	    $lexicon = lexicon_stem(lexicon_read('lexicon.txt'));
 	    $statuses = $queryResult['statuses'];
 	    $result['tweets'] = process_tweets($statuses, $lexicon);
-	    $global_frecuencies = global_frec($statuses);
-	    echo '<pre>';
-	    print_r($global_frecuencies);
-	    echo '</pre>';
+	    $global_frecuencies = global_wordcount($statuses);
+	    // echo '<pre>';
+	    // print_r($global_frecuencies);
+	    // echo '</pre>';
 
 	    foreach ($result['tweets'] as $tweet) {
 	    	$pos = $tweet['positive'];

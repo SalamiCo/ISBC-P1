@@ -153,7 +153,7 @@ function lexicon_word_value (&$lexicon, $word) {
 	return $ret;
 }
 
-function global_frec (&$tweets) {
+function global_wordcount (&$tweets) {
 	$frec = array();
 	if (is_array($tweets)) {
 		foreach ($tweets as $tweet) {
