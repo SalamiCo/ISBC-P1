@@ -7,6 +7,8 @@
     <link href="css/style.css" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript" src="//www.google.com/jsapi"></script>
+    <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/underscore.js"></script>
     <script type="text/javascript" src="js/packery.js"></script>
@@ -14,7 +16,7 @@
 
     <script type="text/template" class="template">
       <article class="tweet <%- tpl.class %>">
-        <img class="avatar" width="48" height="48" src="image.php?url=<%- encodeURIComponent(tpl.tweet.user.avatar) %>" />
+        <img class="avatar" width="48" height="48" src="<%- tpl.tweet.user.avatar %>" />
         <% if (tpl.tweet.geo) { %><img class="geo" src="img/geo.png" /><% } %>
         <div class="user">
           <p class="name"><%- tpl.tweet.user.name %></p>
@@ -49,6 +51,7 @@
         <div id="summary" class="summary stamp"></div>
         <div class="tweet-sizer"></div>
         <div class="tweet-gutter-sizer"></div>
+        <div id="map-canvas" class="gmap stamp"></div>
         <div id="messages" class="stamp"></div>
       </div>
     </div>
