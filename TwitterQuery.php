@@ -75,7 +75,7 @@ function queryTwitterAPI($query)
     $json = curl_exec($feed);
     curl_close($feed);
 
-    $twitter_data = json_decode($json,true);
+    $twitter_data = json_decode($json, true);
     return $twitter_data;
 }
 

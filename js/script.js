@@ -86,8 +86,9 @@ function performSearch (searchTerm) {
           var tws = resp.tweets[t];
           tws.user.avatar = 'image.php?url=' + encodeURIComponent(tws.user.avatar);
 
-          var type = tws.positive.length>tws.negative.length?'positive'
-              : tws.positive.length<tws.negative.length?'negative'
+          var value = _.reduce(tws.words, function(m,n){return m+n;}, 0);
+          var type = value > 0.01 ?'positive'
+              : value < -0.01 ? 'negative'
               : 'neutral';
 
           var tplData = {
@@ -238,7 +239,7 @@ if (google) {
         style: google.maps.ZoomControlStyle.SMALL
       }
     };
-    
+
     gmap = new google.maps.Map(document.getElementById("map-canvas"),
         mapOptions);
   });
