@@ -2,6 +2,7 @@
 
   mb_internal_encoding("UTF-8");
   require_once('functions.php');
+  require_once('cache.php');
 
   //error_reporting(0);
   $result = array('status' => 'error_unknown');
@@ -26,6 +27,9 @@
 	      'negative' => 0
 	    );
 
+      $stemCache = Cache::getCache('stemming');
+      $stemCache->load();
+
 	    $lexicon = lexicon_stem(lexicon_read('lexicon.txt'));
 	    $statuses = $queryResult['statuses'];
 	    $result['tweets'] = process_tweets($statuses, $lexicon);
@@ -40,6 +44,9 @@
 	    		$result['summary']['neutral']++;
 	    	}
 	    }
+
+      $stemCache->load();
+      $stemCache->save();
 		}
   }
 

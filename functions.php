@@ -2,6 +2,7 @@
 
 require_once('TwitterQuery.php');
 require_once('stemm_es.php');
+require_once('cache.php');
 
 define('VALUE_POSITIVE', 'pos');
 define('VALUE_NEGATIVE', 'neg');
@@ -110,13 +111,15 @@ function lexicon_read($file_name){
 }
 
 function word_stem ($word) {
-	static $stemCache = array();
-	if (isset($stemCache[$word])) {
-		return $stemCache[$word];
+	$word = strtolower($word);
+
+	$cache = Cache::getCache('stemming');
+	if ($cache->has($word)) {
+		return $cache->get($word);
 	}
 
 	$stemmed = @stemm_es::stemm($word);
-	$stemCache[$word] = $stemmed;
+	$cache->set($word, $stemmed);
 	return $stemmed;
 }
 
