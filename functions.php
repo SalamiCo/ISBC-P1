@@ -35,19 +35,24 @@ function process_tweets (&$tweets, &$lexicon) {
 
 			$procTweet = array(
 				'text' => $tweet['text'],
-				'words' => $procText['words'],
+				'textWords' => $procText['words'],
 				'user' => array(
 					'name' => $tweet['user']['name'],
 					'screenName' => $tweet['user']['screen_name'],
 					'avatar' => $tweet['user']['profile_image_url_https']
 				),
 				'geo' => $tweet['coordinates'],
-				'positive' => $procText['positive'],
-				'negative' => $procText['negative']
+				'words' => array()
 			);
 
+			foreach ($procText['positive'] as $word) {
+				$procTweet['words'][$word] = +1;
+			}
+			foreach ($procText['negative'] as $word) {
+				$procTweet['words'][$word] = -1;
+			}
+
 			$postProcessed = postprocess_tweet($procTweet);
-			unset($postProcessed['words']);
 			$processed[] = $postProcessed;
 		}
 	}
@@ -184,8 +189,6 @@ function global_wordcount (&$tweets) {
 }
 
 function postprocess_tweet (&$tweet) {
-	$pText = implode(' ', $tweet['words']);
-
 
 	return $tweet;
 }

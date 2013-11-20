@@ -1,5 +1,6 @@
 <?php
   
+  header('Content-Type: text/plain');
   require_once('functions.php');
 
   //error_reporting(0);
@@ -31,12 +32,12 @@
 	    $global_frecuencies = global_wordcount($statuses);
 
 	    foreach ($result['tweets'] as $tweet) {
-	    	$pos = count($tweet['positive']);
-	    	$neg = count($tweet['negative']);
+        print_r($tweet);
+	    	$val = array_sum($tweet['words']);
 
-	    	if ($pos > $neg) {
+	    	if ($val > 0.01) {
 	    		$result['summary']['positive']++;
-	    	} else if ($neg > $pos) {
+	    	} else if ($val < 0.01) {
 	    		$result['summary']['negative']++;
 	    	} else {
 	    		$result['summary']['neutral']++;
