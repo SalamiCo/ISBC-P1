@@ -29,7 +29,6 @@
 	    $lexicon = lexicon_stem(lexicon_read('lexicon.txt'));
 	    $statuses = $queryResult['statuses'];
 	    $result['tweets'] = process_tweets($statuses, $lexicon);
-	    $global_frecuencies = global_wordcount($statuses);
 
 	    foreach ($result['tweets'] as $tweet) {
         print_r($tweet);
