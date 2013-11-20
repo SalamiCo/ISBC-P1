@@ -25,14 +25,13 @@
         <div class="text"><%- tpl.tweet.text %></div>
 
         <% _.each(tpl.tweet.words, function(value, word){ %>
-          <aside class="<%
-            if (value > 0.01) {
-              %>positive<%
-            } else if (value < -0.01) {
-              %>negative<%
-            } else {
-              %>neutral<%
-            } %>">+ <%- word %></aside>
+          <% if (value > 0.01) { %>
+            <aside class="positive"><%- '+' + value + ' ' + word %></aside>
+          <% } else if (value < -0.01) { %>
+            <aside class="negative"><%- value + ' ' + word %></aside>
+          <% } else { %>
+            <aside class="neutral"><%- '= ' + word %></aside>
+          <% } %>
         <% }); %>
       </article>
     </script>

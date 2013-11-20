@@ -216,7 +216,7 @@ h1 {
 
 
 /* Asides indicating positive/negative score */
-.tweet aside.negative, .tweet aside.positive {
+.tweet aside.negative, .tweet aside.positive, .tweet aside.neutral {
   -o-border-radius: 0.625em;
   -ms-border-radius: 0.625em;
   -moz-border-radius: 0.625em;
@@ -227,7 +227,7 @@ h1 {
   position: relative;
 
   padding: 0.25em 0.8em;
-  margin: 0 0.2em;
+  margin: 0.2em 0.2em 0;
 
   font-size: 0.7em;
   font-weight: bold;
@@ -245,6 +245,10 @@ h1 {
 
 .tweet aside.positive {
   background-color: #0A0;
+}
+
+.tweet aside.neutral {
+  background-color: #667;
 }
 
 .tweet .text, .tweet .user {
