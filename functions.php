@@ -109,8 +109,15 @@ function lexicon_read($file_name){
 	return $lexicon;
 }
 
-function word_stem($word){
-	return stemm_es::stemm($word);
+function word_stem ($word) {
+	static $stemCache = array();
+	if (isset($stemCache[$word])) {
+		return $stemCache[$word];
+	}
+
+	$stemmed = @stemm_es::stemm($word);
+	$stemCache[$word] = $stemmed;
+	return $stemmed;
 }
 
 function lexicon_stem ($lexicon) {
