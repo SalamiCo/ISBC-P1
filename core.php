@@ -1,6 +1,6 @@
 <?php
-  
-  header('Content-Type: text/plain');
+
+  mb_internal_encoding("UTF-8");
   require_once('functions.php');
 
   //error_reporting(0);
@@ -30,12 +30,11 @@
 	    $statuses = $queryResult['statuses'];
 	    $result['tweets'] = process_tweets($statuses, $lexicon);
 	    foreach ($result['tweets'] as $tweet) {
-        //print_r($tweet);
 	    	$val = array_sum($tweet['words']);
 
 	    	if ($val > 0.01) {
 	    		$result['summary']['positive']++;
-	    	} else if ($val < 0.01) {
+	    	} else if ($val < -0.01) {
 	    		$result['summary']['negative']++;
 	    	} else {
 	    		$result['summary']['neutral']++;
@@ -45,8 +44,8 @@
   }
 
   /* Return the result array as JSON */
-  header('Content-Type: application/json');
-  echo json_encode($result, JSON_UNESCAPED_UNICODE);
+  header('Content-Type: application/json; charset=utf-8');
+  echo json_encode($result);
 
   /* Something happened... */
   $jsonErr = json_last_error();

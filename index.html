@@ -24,12 +24,15 @@
         </div>
         <div class="text"><%- tpl.tweet.text %></div>
 
-        <% _.each(tpl.tweet.positive, function(word){ %>
-          <aside class="positive">+ <%- word %></aside>
-        <% }); %>
-
-        <% _.each(tpl.tweet.negative, function(word){ %>
-        <aside class="negative">- <%- word %></aside>
+        <% _.each(tpl.tweet.words, function(value, word){ %>
+          <aside class="<%
+            if (value > 0.01) {
+              %>positive<%
+            } else if (value < -0.01) {
+              %>negative<%
+            } else {
+              %>neutral<%
+            } %>">+ <%- word %></aside>
         <% }); %>
       </article>
     </script>
