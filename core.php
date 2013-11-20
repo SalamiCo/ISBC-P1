@@ -28,10 +28,10 @@
 	    $lexicon = lexicon_stem(lexicon_read('lexicon.txt'));
 	    $statuses = $queryResult['statuses'];
 	    $result['tweets'] = process_tweets($statuses, $lexicon);
-	    // $tf_idf = tf_idf($statuses, $lexicon);
-	    // echo '<pre>';
-	    // print_r($tf_idf);
-	    // echo '</pre>';
+	    $tf_idf = tf_idf($_GET['term'],$statuses, $lexicon);
+	    echo '<pre>';
+	    print_r($tf_idf);
+	    echo '</pre>';
 
 	    foreach ($result['tweets'] as $tweet) {
 	    	$pos = $tweet['positive'];

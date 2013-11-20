@@ -175,11 +175,11 @@ function global_wordcount (&$tweets, &$lexicon) {
 }
 
 //TODO: hacer tf_idf para cada tweet => sacar el peso de cada palabra del tweet 
-function tf_idf (&$tweets, &$lexicon) {
+function tf_idf ($term, &$tweets, &$lexicon) {
 	if (is_array($tweets)) {		
 		$freq = global_wordcount($tweets, $lexicon);
 		$filter = array(); 
-
+		$stemmed_term = word_stem($term); //search term stemmed
 		$D = count($tweets); //Corpus length
 		foreach ($tweets as $tweet) {
 			$words = preg_split('/((\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+))/',
@@ -190,11 +190,13 @@ function tf_idf (&$tweets, &$lexicon) {
 			foreach ($words as $word) {
 				//calculate local frequency for each word
 				$stem = word_stem($word);
-				if(isset($lexicon[$stem]) && !isset($local_freq[$stem])) {
-					$local_freq[$stem] = 1;
-				} else if(isset($lexicon[$stem]) && isset($local_freq[$stem])){
-					$local_freq[$stem]++;
-				}
+				if($stem != $stemmed_term){ //we dont want to filter the search term
+					if(isset($lexicon[$stem]) && !isset($local_freq[$stem])) {
+						$local_freq[$stem] = 1;
+					} else if(isset($lexicon[$stem]) && isset($local_freq[$stem])){
+						$local_freq[$stem]++;
+					}
+				}				
 			}
 			
 			//filter the minimum TF-IDF if there are more of than word
@@ -202,7 +204,7 @@ function tf_idf (&$tweets, &$lexicon) {
 			$filtered = null;
 			$keys = array_keys($local_freq);
 
-			if (count($keys) > 1) {
+			if (count($keys) > 1) { //only filter if there are more than one word
 				foreach ($keys as $key) {						
 					$tf  = $local_freq[$key] / $local_wordcount;
 					$idf = log($D / $freq[$key], 2);				
