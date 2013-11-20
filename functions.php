@@ -49,7 +49,7 @@ function process_tweets (&$tweets, &$lexicon) {
 		}
 	}
 
-	return tf_idf('', $processed, $lexicon);
+	return tf_idf($processed, $lexicon);
 }
 
 function process_tweet_text($text, &$lexicon){
@@ -181,12 +181,11 @@ function postprocess_tweet (&$tweet) {
 	return $tweet;
 }
 
-function tf_idf ($term, &$proc_tweets, &$lexicon) {
+function tf_idf (&$proc_tweets, &$lexicon) {
 	if (is_array($proc_tweets)) {
 		$D = count($proc_tweets); //Corpus length						
 		$freq = global_wordcount($proc_tweets, $lexicon);
 		$filter = array();		
-		$stemmed_term = word_stem($term); //search term stemmed
 		
 		foreach ($proc_tweets as $t=>$tweet) {
 			$words = $tweet['textWords'];
@@ -195,13 +194,11 @@ function tf_idf ($term, &$proc_tweets, &$lexicon) {
 
 			foreach ($words as $word) {
 				//calculate local frequency for each word
-				if ($word != $stemmed_term) { //we dont want to filter the search term
-					if (isset($lexicon[$word]) && !isset($local_freq[$word])) {
-						$local_freq[$word] = 1;
-					} else if (isset($lexicon[$word]) && isset($local_freq[$word])) {
-						$local_freq[$word]++;
-					}
-				}				
+				if (isset($lexicon[$word]) && !isset($local_freq[$word])) {
+					$local_freq[$word] = 1;
+				} else if (isset($lexicon[$word]) && isset($local_freq[$word])) {
+					$local_freq[$word]++;
+				}			
 			}
 			
 			//filter the minimum TF-IDF if there are more of than word
@@ -228,53 +225,3 @@ function tf_idf ($term, &$proc_tweets, &$lexicon) {
 	}
 	return $proc_tweets;
 }
-
-/*
-function tf_idf ($term, &$tweets, &$lexicon) {
-	if (is_array($tweets)) {		
-		$freq = global_wordcount($tweets, $lexicon);
-		$filter = array(); 
-		$stemmed_term = word_stem($term); //search term stemmed
-		$D = count($tweets); //Corpus length
-		foreach ($tweets as $tweet) {
-			$words = preg_split('/((\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+))/',
-				$tweet['text'], -1, PREG_SPLIT_NO_EMPTY);
-
-			$local_freq = array();
-			$local_wordcount = count($words);
-			foreach ($words as $word) {
-				//calculate local frequency for each word
-				$stem = word_stem($word);
-				if($stem != $stemmed_term){ //we dont want to filter the search term
-					if(isset($lexicon[$stem]) && !isset($local_freq[$stem])) {
-						$local_freq[$stem] = 1;
-					} else if(isset($lexicon[$stem]) && isset($local_freq[$stem])){
-						$local_freq[$stem]++;
-					}
-				}				
-			}
-			
-			//filter the minimum TF-IDF if there are more of than word
-			$min_wp = PHP_INT_MAX;
-			$filtered = null;
-			$keys = array_keys($local_freq);
-
-			if (count($keys) > 1) { //only filter if there are more than one word
-				foreach ($keys as $key) {						
-					$tf  = $local_freq[$key] / $local_wordcount;
-					$idf = log($D / $freq[$key], 2);				
-					$wp = $tf * $idf;
-					
-					if($wp < $min_wp) {
-						$min_wp = $wp;
-						$filtered = $key;
-					}
-				}
-			}	
-			//filter[i] = filtered word for tweet i, else null
-			$filter[] = $filtered;		
-		}		
-	}
-	return $filter;
-}
-*/
