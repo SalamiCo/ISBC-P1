@@ -68,7 +68,6 @@ class Cache {
         }
       }
     }
-    echo count($this->data);
 
     $file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $this->name;
     file_put_contents($file, gzencode(serialize($this->data)));
