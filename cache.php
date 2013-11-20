@@ -51,7 +51,6 @@ class Cache {
   }
 
   public function save () {
-    echo count($this->data) . ' | ';
     if (count($this->data) > self::MAX_STORED_ITEMS) {
       $vals = array_values($this->data);
       usort($vals, function ($a, $b) {
@@ -62,7 +61,6 @@ class Cache {
                : 0);
       });
       $min = $vals[(self::MAX_STORED_ITEMS * 2) / 3]['count'];
-      echo '(' . $min . ') | ';
 
       foreach ($this->data as $i=>$v) {
         if ($v['count'] <= $min) {
