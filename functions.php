@@ -44,11 +44,12 @@ function process_tweets (&$tweets, &$lexicon) {
 				$procTweet['words'][$word] = -1;
 			}
 
-			$postProcessed = postprocess_tweet(tf_idf($procTweet));
+			$postProcessed = postprocess_tweet($procTweet);
 			$processed[] = $postProcessed;
 		}
 	}
-	return $processed;
+
+	return tf_idf('', $processed, $lexicon);
 }
 
 function process_tweet_text($text, &$lexicon){
@@ -163,14 +164,12 @@ function lexicon_word_value (&$lexicon, $word) {
 
 function global_wordcount (&$proc_tweets, &$lexicon) {
 	$freq = array();
-	if (is_array($proc_tweets)) {
-		foreach ($proc_tweets as $tweet) {
-			foreach (array_unique($tweet['textWords']) as $word) {
-				if(isset($lexicon[$word]) && !isset($freq[$word])) {
-					$freq[$word] = 1;
-				} else if(isset($lexicon[$word]) && isset($freq[$word])){
-					$freq[$word]++;
-				}
+	foreach ($proc_tweets as $tweet) {
+		foreach (array_unique($tweet['textWords']) as $word) {
+			if (isset($lexicon[$word]) && !isset($freq[$word])) {
+				$freq[$word] = 1;
+			} else if (isset($lexicon[$word]) && isset($freq[$word])) {
+				$freq[$word]++;
 			}
 		}
 	}
@@ -190,15 +189,16 @@ function tf_idf ($term, &$proc_tweets, &$lexicon) {
 		$stemmed_term = word_stem($term); //search term stemmed
 		
 		foreach ($proc_tweets as $t=>$tweet) {
+			$words = $tweet['textWords'];
 			$local_freq = array();
 			$local_wordcount = count($words);
 
-			foreach ($tweet['textWords'] as $word) {
+			foreach ($words as $word) {
 				//calculate local frequency for each word
-				if($word != $stemmed_term){ //we dont want to filter the search term
-					if(isset($lexicon[$word]) && !isset($local_freq[$word])) {
+				if ($word != $stemmed_term) { //we dont want to filter the search term
+					if (isset($lexicon[$word]) && !isset($local_freq[$word])) {
 						$local_freq[$word] = 1;
-					} else if(isset($lexicon[$word]) && isset($local_freq[$word])){
+					} else if (isset($lexicon[$word]) && isset($local_freq[$word])) {
 						$local_freq[$word]++;
 					}
 				}				
@@ -221,7 +221,9 @@ function tf_idf ($term, &$proc_tweets, &$lexicon) {
 					}
 				}
 			}	
-			$proc_tweets[$t]['words'][$filtered] = 0;	
+			if ($filtered != null) {
+				$proc_tweets[$t]['words'][$filtered] = 0;
+			}				
 		}		
 	}
 	return $proc_tweets;
