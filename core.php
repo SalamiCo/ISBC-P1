@@ -29,9 +29,8 @@
 	    $lexicon = lexicon_stem(lexicon_read('lexicon.txt'));
 	    $statuses = $queryResult['statuses'];
 	    $result['tweets'] = process_tweets($statuses, $lexicon);
-
 	    foreach ($result['tweets'] as $tweet) {
-        print_r($tweet);
+        //print_r($tweet);
 	    	$val = array_sum($tweet['words']);
 
 	    	if ($val > 0.01) {
